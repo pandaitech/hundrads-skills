@@ -137,6 +137,9 @@ is happy. **Never submit copy the user hasn't seen.**
   (`payload.image_url`). Prefer the user's own hosted image URLs. If the
   user wants a generated image and has a connected brand, `POST
   /v1/media/poster` (with `brand`) returns an `image_url` you can reuse.
+  Image generation is BYOK — needs the workspace's own Gemini/OpenAI key; a
+  **400 `No <provider> API key configured`** means add one at
+  `https://hundrads.com/providers` first.
 - **Threads** posts go out TEXT only. If a post needs media, say so in
   `agent_note` and tell the user — they can reject and post manually with
   the attachment, or approve text-only.

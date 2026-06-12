@@ -90,6 +90,12 @@ On 200, tell the user:
 - What they can ask for now: ad drafts, Telegram/Threads posts,
   newsletters, launch campaigns — every draft lands in the Hundrads
   dashboard for THEIR approval; nothing posts or spends on its own.
+- **AI features are BYOK.** Anything that generates copy (`/v1/complete`) or
+  images (`/v1/media/poster` — posters, pfp/banner) uses the user's OWN AI
+  provider key. Hundrads supplies none. Add one at `$BASE/providers` (stored
+  encrypted): Gemini for cheap images, OpenAI for accurate-text/complex. A
+  **400 `No <provider> API key configured`** from those endpoints means the
+  key is missing — point them at `$BASE/providers`.
 
 ## Troubleshooting
 
