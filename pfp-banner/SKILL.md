@@ -102,6 +102,13 @@ Prompt construction:
 registry) — cheap, good for clean graphic compositions. Every call is
 logged to the workspace Logs tab automatically.
 
+> **Needs your own AI key (BYOK).** Hundrads doesn't supply AI keys. Image
+> generation uses your workspace's stored provider key — `complexity: "simple"`
+> needs a **Gemini** key, `"complex"` an **OpenAI** key. Add it once at
+> `https://hundrads.com/providers`. Without it the call returns **400** (not
+> 502): `No <provider> API key configured for this workspace…`. If you'd rather
+> not store a key, call the provider directly and skip Hundrads.
+
 ```bash
 curl -s -X POST "https://hundrads.com/v1/media/poster" \
   -H "Authorization: Bearer $HUNDRADS_API_KEY" -H "Content-Type: application/json" \
@@ -134,6 +141,9 @@ Rules:
 
 - **Never print `png_b64`** to chat or read the JSON into context — it's
   hundreds of KB. Always pipe the response to a file and decode from there.
+- **400 `No <provider> API key configured`?** The workspace has no stored
+  Gemini/OpenAI key — tell the user to add one at `https://hundrads.com/providers`,
+  then retry. Don't treat it as a transient error or retry blindly.
 - Leave `brand` empty — that field uploads to a Meta **ad account**
   (`image_hash` for ad drafts), which is not what a pfp/cover needs.
 - Generated text wrong/misspelled? Retry once with the text quoted and

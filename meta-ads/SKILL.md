@@ -74,6 +74,9 @@ also serves interactive docs at `https://hundrads.com/docs`.
    Accurate in-image text or photorealism: `complexity: "complex"` (pricier).
    If the punchline lives in rendered screenshot text, don't AI-generate it —
    give the user the exact text to screenshot on a real phone.
+   **BYOK:** image generation uses the workspace's own AI key (`simple` → Gemini,
+   `complex` → OpenAI). A **400 `No <provider> API key configured`** means none
+   is stored — have the user add one at `https://hundrads.com/providers`, then retry.
 
 6. **Submit drafts.**
 
