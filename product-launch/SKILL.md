@@ -139,7 +139,9 @@ is happy. **Never submit copy the user hasn't seen.**
   /v1/media/poster` (with `brand`) returns an `image_url` you can reuse.
   Image generation is BYOK — needs the workspace's own Gemini/OpenAI key; a
   **400 `No <provider> API key configured`** means add one at
-  `https://hundrads.com/providers` first.
+  `https://hundrads.com/providers` first. The poster call can take **up to 5
+  min** — set the Bash `timeout` to **600000** (10 min) so the default 2-min
+  cutoff doesn't kill it.
 - **Threads** posts go out TEXT only. If a post needs media, say so in
   `agent_note` and tell the user — they can reject and post manually with
   the attachment, or approve text-only.

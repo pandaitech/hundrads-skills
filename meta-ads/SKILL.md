@@ -77,6 +77,9 @@ also serves interactive docs at `https://hundrads.com/docs`.
    **BYOK:** image generation uses the workspace's own AI key (`simple` → Gemini,
    `complex` → OpenAI). A **400 `No <provider> API key configured`** means none
    is stored — have the user add one at `https://hundrads.com/providers`, then retry.
+   **Slow call:** a poster call can take **up to 5 min** — set the Bash `timeout`
+   to **600000** (10 min) so it isn't killed by the 2-min default; not hung, just
+   generating.
 
 6. **Submit drafts.**
 
@@ -97,10 +100,21 @@ also serves interactive docs at `https://hundrads.com/docs`.
          "link_url": "https://...",
          "daily_budget_cents": 1000,
          "image_hash": "<from poster, or empty>",
-         "image_url": "<from poster, or empty>"
+         "image_url": "<from poster, or empty>",
+         "geo_countries": ["MY"]
        }
      }'
    ```
+
+   - **Targeting is mostly the creative's job now.** Meta's delivery finds the
+     buyer from the ad itself — don't hand-build narrow interest/demographic
+     audiences; let the hook and image do the targeting. The ONE lever worth
+     setting is **location**, and only when the offer is geo-bound:
+     `geo_countries` is a list of ISO 3166-1 alpha-2 codes. Set it when the
+     product ships to one country (`["MY"]`), or a few (`["MY","SG"]`). Leave it
+     off otherwise — empty defaults to the account's country. (Sub-country
+     targeting — a cafe in one district — isn't supported yet; note it to the
+     user if they ask.)
 
    - Use the SAME `campaign_name` across variants of one test — Hundrads
      consolidates them under one campaign on approval.

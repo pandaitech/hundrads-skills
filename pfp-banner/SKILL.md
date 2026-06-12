@@ -109,6 +109,13 @@ logged to the workspace Logs tab automatically.
 > 502): `No <provider> API key configured for this workspace…`. If you'd rather
 > not store a key, call the provider directly and skip Hundrads.
 
+> **Image gen is slow — raise your Bash timeout.** A single `/v1/media/poster`
+> call can take **up to 5 minutes** (model queue + generation). The default
+> Bash tool timeout (2 min) will kill the request mid-flight. Set the call's
+> `timeout` to **600000** (10 min) so it has room to finish, and don't treat a
+> long-running call as hung. Generating a pfp + cover = two calls, so budget
+> ~10 min total.
+
 ```bash
 curl -s -X POST "https://hundrads.com/v1/media/poster" \
   -H "Authorization: Bearer $HUNDRADS_API_KEY" -H "Content-Type: application/json" \
