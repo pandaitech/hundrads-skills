@@ -33,8 +33,7 @@ This skill must work headless. When no user is present:
 - Never ask questions. Apply the policy + defaults and submit proposals —
   the review queue IS the conversation.
 - Skip anything that requires an in-chat decision; note it in the report.
-- Always finish with the report + `log_action` so the morning dashboard
-  tells the story.
+- Always finish with the report so the morning dashboard tells the story.
 
 ## The loop
 
@@ -219,23 +218,9 @@ End every run with a marketer's stand-up, per brand:
 - **Blocked/needs human**: missing permissions, empty brief, anything
   skipped in unattended mode.
 
-## Log the work (client report)
-
-```
-log_action(skill="manage-meta-ads", channel="ads", brand="<brand>",
-           title="Daily ads check: 2 kills, 1 scale proposed",
-           summary="<one plain sentence on what + why>",
-           outcome="proposed",            # or "report_only" when no action
-           status="awaiting_review",      # or "info"
-           deliverable="")
-```
-
-Tag any `complete` calls with
-`complete(..., skill="manage-meta-ads", channel="ads", brand="<brand>")`.
-
 ## Deliver the report (send_ads_report)
 
-After `log_action`, send the SAME stand-up to the user's channel — call
+Send the SAME stand-up to the user's channel — call
 `send_ads_report` exactly once per brand. The server owns the layout
 (Discord embed / Telegram album / email, per-user setting) and renders the
 account-health dashboard as IMAGES from live Meta data (KPI tiles for last
