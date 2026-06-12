@@ -1,5 +1,5 @@
 ---
-name: manage-meta-ads
+name: hundrads-manage-ads
 description: Run the daily digital-marketer loop on live Meta (Facebook/Instagram) ads for any brand in the ad-account registry — check performance, detect issues, kill losers, scale winners, fix fatigued creatives, handle comments, and queue the next test. Use when the user says "check my ads", "manage my ads", "how are my ads doing", "kill/scale anything?", or a scheduled run invokes it. Everything goes through Hundrads PROPOSALS — never touches Meta directly; the user approves in the dashboard (or a standing auto-approve policy executes low-risk kinds).
 ---
 
@@ -107,7 +107,7 @@ brief/sales data when available.
 | Spend ≥ ~3× target CPA, zero conversions, out of learning | **Kill** — `status_change` pause on the ad (adset if all its ads qualify) |
 | CTR < ~half account average after meaningful spend (≥ RM30) | **Kill or fix** — pause, or `ad_edit` if the offer is right but the hook is weak |
 | ROAS ≥ top-quartile for 3+ consecutive days, stable CPA | **Scale up** — `budget_change` +20% (never more than `max_budget_increase_pct`, never past `max_daily_budget_cents`; one step per day per adset) |
-| ROAS positive but declining + frequency > 3 | **Refresh** — propose creative refresh: `ad_edit` for copy, or hand off to run-meta-ads for a new variant |
+| ROAS positive but declining + frequency > 3 | **Refresh** — propose creative refresh: `ad_edit` for copy, or hand off to the meta-ads skill for a new variant |
 | ROAS between break-even and target | **Scale down** — `budget_change` −20–30%; cheaper than killing a learner |
 | Genuine buying-intent comment | `comment_reply` in brand voice (read `get_brand_brief` first) |
 | Spam/abuse comment | `comment_hide` |
@@ -198,9 +198,9 @@ Check every run, in this order:
    scene × what it tests).
 3. **Clear winner + clear loser exist** → the test IS concluded even if
    nobody declared it. Propose the next iteration from the winner's angle —
-   backlog cell if one matches, else hand off to **run-meta-ads** to draft.
+   backlog cell if one matches, else hand off to the **meta-ads** skill to draft.
 
-run-meta-ads owns drafting/creative; this skill owns the live account and
+The meta-ads skill owns drafting/creative; this skill owns the live account and
 the resume/kill decisions on existing objects. Always state the budget
 impact of what you're suggesting (RM/day added if enabled).
 
