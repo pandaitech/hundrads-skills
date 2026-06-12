@@ -30,6 +30,7 @@ any time at [hundrads.com/keys](https://hundrads.com/keys)).
 | `newsletter` | Draft email newsletters (Kit) in your voice, scheduled |
 | `product-launch` | Full 10-post launch campaign across channels |
 | `seed-page` | Warm up a page with organic-looking posts before ads |
+| `pfp-banner` | Generate page pfp + cover/banner images (Nano Banana) — you upload them |
 
 API reference: [hundrads.com/llms.txt](https://hundrads.com/llms.txt) ·
 interactive docs: [hundrads.com/docs](https://hundrads.com/docs)
