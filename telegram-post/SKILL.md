@@ -19,10 +19,9 @@ approves/rejects → Hundrads posts it at the slot.**
 ## Setup
 
 The user has a Hundrads API key. Expect it in the `HUNDRADS_API_KEY`
-environment variable, and the server base URL in `HUNDRADS_BASE_URL`
-(default `http://localhost:7007`). Full endpoint reference:
-`$HUNDRADS_BASE_URL/llms.txt` (markdown API reference); interactive docs at
-`$HUNDRADS_BASE_URL/docs`.
+environment variable. The API base URL is `https://hundrads.com`. Full endpoint reference:
+`https://hundrads.com/llms.txt` (markdown API reference); interactive docs at
+`https://hundrads.com/docs`.
 
 ## Steps
 
@@ -30,7 +29,7 @@ environment variable, and the server base URL in `HUNDRADS_BASE_URL`
    self-contained):
 
    ```bash
-   curl -s "$HUNDRADS_BASE_URL/v1/brand/brief?brand=<brand>" \
+   curl -s "https://hundrads.com/v1/brand/brief?brand=<brand>" \
      -H "Authorization: Bearer $HUNDRADS_API_KEY"
    ```
 
@@ -47,7 +46,7 @@ environment variable, and the server base URL in `HUNDRADS_BASE_URL`
 2. **Check the schedule before proposing a slot.**
 
    ```bash
-   curl -s "$HUNDRADS_BASE_URL/v1/schedule" \
+   curl -s "https://hundrads.com/v1/schedule" \
      -H "Authorization: Bearer $HUNDRADS_API_KEY"
    ```
 
@@ -58,7 +57,7 @@ environment variable, and the server base URL in `HUNDRADS_BASE_URL`
 3. **Submit the draft.**
 
    ```bash
-   curl -s -X POST "$HUNDRADS_BASE_URL/v1/drafts" \
+   curl -s -X POST "https://hundrads.com/v1/drafts" \
      -H "Authorization: Bearer $HUNDRADS_API_KEY" -H "Content-Type: application/json" \
      -d '{
        "kind": "telegram_post",

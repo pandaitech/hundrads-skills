@@ -19,16 +19,15 @@ read feedback + insights → iterate.**
 ## Setup
 
 The user has a Hundrads API key. Expect it in the `HUNDRADS_API_KEY`
-environment variable, and the server base URL in `HUNDRADS_BASE_URL`
-(default `http://localhost:7007`). Every request:
+environment variable. The API base URL is `https://hundrads.com`. Every request:
 
 ```bash
-curl -s "$HUNDRADS_BASE_URL/v1/accounts" \
+curl -s "https://hundrads.com/v1/accounts" \
   -H "Authorization: Bearer $HUNDRADS_API_KEY"
 ```
 
-Full endpoint reference: `$HUNDRADS_BASE_URL/llms.txt` (markdown API reference). The server
-also serves interactive docs at `$HUNDRADS_BASE_URL/docs`.
+Full endpoint reference: `https://hundrads.com/llms.txt` (markdown API reference). The server
+also serves interactive docs at `https://hundrads.com/docs`.
 
 ## Steps
 
@@ -36,7 +35,7 @@ also serves interactive docs at `$HUNDRADS_BASE_URL/docs`.
    self-contained):
 
    ```bash
-   curl -s "$HUNDRADS_BASE_URL/v1/brand/brief?brand=<brand>" \
+   curl -s "https://hundrads.com/v1/brand/brief?brand=<brand>" \
      -H "Authorization: Bearer $HUNDRADS_API_KEY"
    ```
 
@@ -52,7 +51,7 @@ also serves interactive docs at `$HUNDRADS_BASE_URL/docs`.
 2. **Study what worked — always, before writing a word.**
 
    ```bash
-   curl -s "$HUNDRADS_BASE_URL/v1/library/ads?brand=<brand>&sort=spend&limit=10" \
+   curl -s "https://hundrads.com/v1/library/ads?brand=<brand>&sort=spend&limit=10" \
      -H "Authorization: Bearer $HUNDRADS_API_KEY"
    ```
 
@@ -79,7 +78,7 @@ also serves interactive docs at `$HUNDRADS_BASE_URL/docs`.
 6. **Submit drafts.**
 
    ```bash
-   curl -s -X POST "$HUNDRADS_BASE_URL/v1/drafts" \
+   curl -s -X POST "https://hundrads.com/v1/drafts" \
      -H "Authorization: Bearer $HUNDRADS_API_KEY" -H "Content-Type: application/json" \
      -d '{
        "kind": "meta_ad",
@@ -117,7 +116,7 @@ also serves interactive docs at `$HUNDRADS_BASE_URL/docs`.
 7. **Read the verdicts before the next round.**
 
    ```bash
-   curl -s "$HUNDRADS_BASE_URL/v1/drafts?status=rejected&limit=10" \
+   curl -s "https://hundrads.com/v1/drafts?status=rejected&limit=10" \
      -H "Authorization: Bearer $HUNDRADS_API_KEY"
    ```
 

@@ -20,8 +20,7 @@ to pass the 5-second "is this account real?" check.
 
 ## Setup
 
-`HUNDRADS_API_KEY` env var + `HUNDRADS_BASE_URL` (default
-`http://localhost:7007`). Endpoint reference: `$HUNDRADS_BASE_URL/llms.txt` (markdown API reference).
+`HUNDRADS_API_KEY` env var. API base URL: `https://hundrads.com`. Endpoint reference: `https://hundrads.com/llms.txt` (markdown API reference).
 
 **Channel reality:** Hundrads auto-posts **Threads** and **Telegram** content
 drafts only. There is no Facebook-page or IG-feed sender. If the surface that
@@ -59,7 +58,7 @@ Mix archetypes — roughly one each, adjusted to count:
    self-contained):
 
    ```bash
-   curl -s "$HUNDRADS_BASE_URL/v1/brand/brief?brand=<brand>" \
+   curl -s "https://hundrads.com/v1/brand/brief?brand=<brand>" \
      -H "Authorization: Bearer $HUNDRADS_API_KEY"
    ```
 
@@ -94,7 +93,7 @@ user hasn't seen.
 ## Step 3 — Schedule like a human, not a cron job
 
 ```bash
-curl -s "$HUNDRADS_BASE_URL/v1/schedule" \
+curl -s "https://hundrads.com/v1/schedule" \
   -H "Authorization: Bearer $HUNDRADS_API_KEY"
 ```
 
@@ -113,7 +112,7 @@ curl -s "$HUNDRADS_BASE_URL/v1/schedule" \
 One `POST /v1/drafts` per seed:
 
 ```bash
-curl -s -X POST "$HUNDRADS_BASE_URL/v1/drafts" \
+curl -s -X POST "https://hundrads.com/v1/drafts" \
   -H "Authorization: Bearer $HUNDRADS_API_KEY" -H "Content-Type: application/json" \
   -d '{
     "kind": "threads_post",
@@ -127,7 +126,7 @@ curl -s -X POST "$HUNDRADS_BASE_URL/v1/drafts" \
   }'
 ```
 
-(`telegram_post` payload per [`API.md`]($HUNDRADS_BASE_URL/llms.txt).) Number every
+(`telegram_post` payload per [`API.md`](https://hundrads.com/llms.txt).) Number every
 `agent_note` (`seed N/M` + archetype + the ad launch date) so the user sees
 the plan on the Schedule tab.
 

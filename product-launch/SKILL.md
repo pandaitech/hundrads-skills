@@ -25,10 +25,9 @@ Hundrads posts the approved ones at their slots.**
 ## Setup
 
 The user has a Hundrads API key. Expect it in the `HUNDRADS_API_KEY`
-environment variable, and the server base URL in `HUNDRADS_BASE_URL`
-(default `http://localhost:7007`). Full endpoint reference:
-`$HUNDRADS_BASE_URL/llms.txt` (markdown API reference); interactive docs at
-`$HUNDRADS_BASE_URL/docs`.
+environment variable. The API base URL is `https://hundrads.com`. Full endpoint reference:
+`https://hundrads.com/llms.txt` (markdown API reference); interactive docs at
+`https://hundrads.com/docs`.
 
 This skill composes the channel skills — read their voice rules before
 writing for each channel: [`threads-post`](../threads-post/SKILL.md),
@@ -40,7 +39,7 @@ a separate pass.
 ## Step 0 — Read the brand brief
 
 ```bash
-curl -s "$HUNDRADS_BASE_URL/v1/brand/brief?brand=<brand>" \
+curl -s "https://hundrads.com/v1/brand/brief?brand=<brand>" \
   -H "Authorization: Bearer $HUNDRADS_API_KEY"
 ```
 
@@ -94,7 +93,7 @@ teaching non-coders to ship a SaaS, RM299 early-bird until June 20" is.
 First check what's already booked:
 
 ```bash
-curl -s "$HUNDRADS_BASE_URL/v1/schedule" \
+curl -s "https://hundrads.com/v1/schedule" \
   -H "Authorization: Bearer $HUNDRADS_API_KEY"
 ```
 
@@ -152,7 +151,7 @@ Re-check `GET /v1/schedule` right before submitting (slots may have filled
 while drafting), then one `POST /v1/drafts` per post:
 
 ```bash
-curl -s -X POST "$HUNDRADS_BASE_URL/v1/drafts" \
+curl -s -X POST "https://hundrads.com/v1/drafts" \
   -H "Authorization: Bearer $HUNDRADS_API_KEY" -H "Content-Type: application/json" \
   -d '{
     "kind": "telegram_post",
@@ -166,7 +165,7 @@ curl -s -X POST "$HUNDRADS_BASE_URL/v1/drafts" \
   }'
 ```
 
-(`threads_post` and `newsletter` payloads per [`API.md`]($HUNDRADS_BASE_URL/llms.txt).)
+(`threads_post` and `newsletter` payloads per [`API.md`](https://hundrads.com/llms.txt).)
 Number every `agent_note` (`post N/10` + arc stage) so the user sees the arc
 on the Schedule tab. Collect every response's `warnings` and `review_url`,
 then report the full calendar, all draft ids, and the review URL. Stop —

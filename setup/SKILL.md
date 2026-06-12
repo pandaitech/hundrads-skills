@@ -16,8 +16,8 @@ dashboard. The user can revoke this key any time on the Keys tab.
 ## 0. Already connected?
 
 ```bash
-[ -f .env ] && export $(grep -E "^HUNDRADS_(API_KEY|BASE_URL)=" .env | xargs)
-BASE="${HUNDRADS_BASE_URL:-https://hundrads.com}"
+[ -f .env ] && export $(grep -E "^HUNDRADS_API_KEY=" .env | xargs)
+BASE="https://hundrads.com"
 curl -s -o /dev/null -w "%{http_code}" "$BASE/v1/schedule" \
   -H "Authorization: Bearer $HUNDRADS_API_KEY"
 ```
@@ -68,11 +68,10 @@ curl -s -X POST "$BASE/device/token" \
 
 ## 4. Store the key
 
-Write both values into `.env` in the project root (create it if missing;
-replace existing lines for these two vars, never duplicate):
+Write the key into `.env` in the project root (create it if missing;
+replace the existing line for this var, never duplicate):
 
 ```
-HUNDRADS_BASE_URL=https://hundrads.com
 HUNDRADS_API_KEY=hnd_live_…
 ```
 

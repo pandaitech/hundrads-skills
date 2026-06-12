@@ -23,8 +23,7 @@ Every call in this skill is a curl against the Hundrads REST API:
 
 ```bash
 # HUNDRADS_API_KEY = your workspace key (minted in the dashboard Keys tab)
-# HUNDRADS_BASE_URL defaults to https://hundrads.com for hosted, http://localhost:7007 for self-host
-curl -s "$HUNDRADS_BASE_URL/v1/..." -H "Authorization: Bearer $HUNDRADS_API_KEY"
+curl -s "https://hundrads.com/v1/..." -H "Authorization: Bearer $HUNDRADS_API_KEY"
 ```
 
 POSTs add: `-X POST -H 'Content-Type: application/json' -d '{...}'`
@@ -32,8 +31,7 @@ POSTs add: `-X POST -H 'Content-Type: application/json' -d '{...}'`
 ## Setup reality (check first)
 
 - `HUNDRADS_API_KEY` set — a per-workspace `hnd_live_…` key minted in the
-  dashboard **Keys** tab. `HUNDRADS_BASE_URL` points at the server
-  (`https://hundrads.com` hosted, `http://localhost:7007` self-host).
+  dashboard **Keys** tab.
 - Reading live ads/insights needs `ads_read`; executing approved proposals
   needs `ads_management`. If a call errors on permissions, report exactly
   what's missing — don't fake numbers.
@@ -54,45 +52,45 @@ This skill must work headless. When no user is present:
 
 ```bash
 # pull latest insights into the library
-curl -s -X POST "$HUNDRADS_BASE_URL/v1/library/refresh" \
+curl -s -X POST "https://hundrads.com/v1/library/refresh" \
   -H "Authorization: Bearer $HUNDRADS_API_KEY" \
   -H 'Content-Type: application/json' \
   -d '{"target": "ads", "brand": "<brand>"}'
 
 # what's running now (budget, ctr, roas, frequency)
-curl -s "$HUNDRADS_BASE_URL/v1/ads?brand=<brand>" \
+curl -s "https://hundrads.com/v1/ads?brand=<brand>" \
   -H "Authorization: Bearer $HUNDRADS_API_KEY"
 
 # account averages + top-quartile thresholds
-curl -s "$HUNDRADS_BASE_URL/v1/benchmarks?brand=<brand>" \
+curl -s "https://hundrads.com/v1/benchmarks?brand=<brand>" \
   -H "Authorization: Bearer $HUNDRADS_API_KEY"
 
 # today's spend pace per adset
-curl -s "$HUNDRADS_BASE_URL/v1/budget/pacing?brand=<brand>" \
+curl -s "https://hundrads.com/v1/budget/pacing?brand=<brand>" \
   -H "Authorization: Bearer $HUNDRADS_API_KEY"
 
 # the working window
-curl -s "$HUNDRADS_BASE_URL/v1/insights?brand=<brand>&date_preset=last_7d&level=ad" \
+curl -s "https://hundrads.com/v1/insights?brand=<brand>&date_preset=last_7d&level=ad" \
   -H "Authorization: Bearer $HUNDRADS_API_KEY"
 
 # daily trend when judging momentum
-curl -s "$HUNDRADS_BASE_URL/v1/insights?brand=<brand>&date_preset=last_7d&level=ad&time_increment=1" \
+curl -s "https://hundrads.com/v1/insights?brand=<brand>&date_preset=last_7d&level=ad&time_increment=1" \
   -H "Authorization: Bearer $HUNDRADS_API_KEY"
 ```
 
 Optional but powerful: ground-truth revenue via
 
 ```bash
-curl -s "$HUNDRADS_BASE_URL/v1/sales/summary?brand=<brand>&start_date=<YYYY-MM-DD>&end_date=<YYYY-MM-DD>" \
+curl -s "https://hundrads.com/v1/sales/summary?brand=<brand>&start_date=<YYYY-MM-DD>&end_date=<YYYY-MM-DD>" \
   -H "Authorization: Bearer $HUNDRADS_API_KEY"
-curl -s "$HUNDRADS_BASE_URL/v1/sales/daily?brand=<brand>&start_date=<YYYY-MM-DD>&end_date=<YYYY-MM-DD>" \
+curl -s "https://hundrads.com/v1/sales/daily?brand=<brand>&start_date=<YYYY-MM-DD>&end_date=<YYYY-MM-DD>" \
   -H "Authorization: Bearer $HUNDRADS_API_KEY"
 ```
 
 and head-to-head A/B reads via
 
 ```bash
-curl -s "$HUNDRADS_BASE_URL/v1/insights/compare?brand=<brand>&object_ids=<id1>,<id2>&date_preset=last_7d" \
+curl -s "https://hundrads.com/v1/insights/compare?brand=<brand>&object_ids=<id1>,<id2>&date_preset=last_7d" \
   -H "Authorization: Bearer $HUNDRADS_API_KEY"
 ```
 
@@ -101,7 +99,7 @@ curl -s "$HUNDRADS_BASE_URL/v1/insights/compare?brand=<brand>&object_ids=<id1>,<
 BEFORE deciding anything:
 
 ```bash
-curl -s "$HUNDRADS_BASE_URL/v1/policies?brand=<brand>" \
+curl -s "https://hundrads.com/v1/policies?brand=<brand>" \
   -H "Authorization: Bearer $HUNDRADS_API_KEY"
 ```
 
@@ -122,7 +120,7 @@ The user's past verdicts are training data — read them EVERY run:
 - Recent approve/reject verdicts:
 
   ```bash
-  curl -s "$HUNDRADS_BASE_URL/v1/decisions?brand=<brand>" \
+  curl -s "https://hundrads.com/v1/decisions?brand=<brand>" \
     -H "Authorization: Bearer $HUNDRADS_API_KEY"
   ```
 
@@ -132,7 +130,7 @@ The user's past verdicts are training data — read them EVERY run:
 - Executed proposals with before/after-7d numbers:
 
   ```bash
-  curl -s "$HUNDRADS_BASE_URL/v1/outcomes?brand=<brand>" \
+  curl -s "https://hundrads.com/v1/outcomes?brand=<brand>" \
     -H "Authorization: Bearer $HUNDRADS_API_KEY"
   ```
 
@@ -141,7 +139,7 @@ The user's past verdicts are training data — read them EVERY run:
 - **Dedupe gate**:
 
   ```bash
-  curl -s "$HUNDRADS_BASE_URL/v1/drafts?status=pending&brand=<brand>" \
+  curl -s "https://hundrads.com/v1/drafts?status=pending&brand=<brand>" \
     -H "Authorization: Bearer $HUNDRADS_API_KEY"
   ```
 
@@ -153,7 +151,7 @@ The user's past verdicts are training data — read them EVERY run:
 Start from the alerts (delivery issues, fatigue, underperformance, pacing):
 
 ```bash
-curl -s "$HUNDRADS_BASE_URL/v1/alerts?brand=<brand>" \
+curl -s "https://hundrads.com/v1/alerts?brand=<brand>" \
   -H "Authorization: Bearer $HUNDRADS_API_KEY"
 ```
 
@@ -170,7 +168,7 @@ not verdicts. Add your own scan:
 - **Unanswered comments**:
 
   ```bash
-  curl -s "$HUNDRADS_BASE_URL/v1/comments?brand=<brand>&unanswered=true" \
+  curl -s "https://hundrads.com/v1/comments?brand=<brand>&unanswered=true" \
     -H "Authorization: Bearer $HUNDRADS_API_KEY"
   ```
 
@@ -208,7 +206,7 @@ Rules of engagement:
 For each decision, POST a proposal:
 
 ```bash
-curl -s -X POST "$HUNDRADS_BASE_URL/v1/drafts" \
+curl -s -X POST "https://hundrads.com/v1/drafts" \
   -H "Authorization: Bearer $HUNDRADS_API_KEY" \
   -H 'Content-Type: application/json' \
   -d '{"kind": "<kind>", "agent_note": "<note>", "payload": {...}}'
@@ -269,7 +267,7 @@ Check every run, in this order:
    self-contained):
 
    ```bash
-   curl -s "$HUNDRADS_BASE_URL/v1/brand/brief?brand=<brand>" \
+   curl -s "https://hundrads.com/v1/brand/brief?brand=<brand>" \
      -H "Authorization: Bearer $HUNDRADS_API_KEY"
    ```
 
@@ -280,7 +278,7 @@ Check every run, in this order:
 1. **Paused-test backlog first.**
 
    ```bash
-   curl -s "$HUNDRADS_BASE_URL/v1/ads?brand=<brand>&status=paused" \
+   curl -s "https://hundrads.com/v1/ads?brand=<brand>&status=paused" \
      -H "Authorization: Bearer $HUNDRADS_API_KEY"
    ```
 
@@ -324,7 +322,7 @@ IMAGES from live Meta data (KPI tiles for last 7d / yesterday / today + the
 daily spend-vs-ROAS chart); you only fill the sections:
 
 ```bash
-curl -s -X POST "$HUNDRADS_BASE_URL/v1/reports/ads" \
+curl -s -X POST "https://hundrads.com/v1/reports/ads" \
   -H "Authorization: Bearer $HUNDRADS_API_KEY" \
   -H 'Content-Type: application/json' \
   -d '{

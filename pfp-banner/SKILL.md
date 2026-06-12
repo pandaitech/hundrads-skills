@@ -17,8 +17,7 @@ skill generates both with Nano Banana (Gemini's image model) via
 
 ## Setup
 
-`HUNDRADS_API_KEY` env var + `HUNDRADS_BASE_URL` (default
-`http://localhost:7007`). Endpoint reference: `$HUNDRADS_BASE_URL/llms.txt`.
+`HUNDRADS_API_KEY` env var. API base URL: `https://hundrads.com`. Endpoint reference: `https://hundrads.com/llms.txt`.
 
 ## Step 1 — Quick intake
 
@@ -35,9 +34,41 @@ Ask only what you can't infer:
 Then read the brand brief — it carries voice, colors, and positioning:
 
 ```bash
-curl -s "$HUNDRADS_BASE_URL/v1/brand/brief?brand=<brand>" \
+curl -s "https://hundrads.com/v1/brand/brief?brand=<brand>" \
   -H "Authorization: Bearer $HUNDRADS_API_KEY"
 ```
+
+### Scan the working folder for an existing logo / brand reference
+
+Before writing any prompt, look for a real logo or brand asset already
+sitting in the folder this skill runs in — most brands have one. Don't
+invent a logo when one exists.
+
+```bash
+find . -maxdepth 3 \
+  \( -iname '*logo*' -o -iname '*brand*' -o -iname '*icon*' -o -iname '*mark*' \
+     -o -iname '*wordmark*' -o -iname '*favicon*' \) \
+  \( -iname '*.png' -o -iname '*.jpg' -o -iname '*.jpeg' -o -iname '*.svg' -o -iname '*.webp' \) \
+  -not -path '*/node_modules/*' 2>/dev/null
+```
+
+Also glance at the `brand-assets/` output dir and any `assets/`, `public/`,
+`static/`, or `img/` folders for unobviously-named brand imagery.
+
+If a logo is found:
+
+1. **Read it** (open the image, or for `.svg` read the markup) so you can
+   describe it precisely — shape, colors (hex), letterforms, icon motif.
+2. The poster endpoint takes a **text prompt only** — no image upload. So
+   feed the logo into the prompt as an exact verbal description: e.g.
+   *"the brand's existing logo: a rounded teal hexagon (#0FB5AE) enclosing a
+   white lowercase 'h', flat, no gradient"*. The closer the description, the
+   closer the generated asset matches the real mark.
+3. If the logo carries text you must reproduce exactly, quote it (same rule
+   as any generated text — character-for-character).
+
+If nothing is found, don't fabricate one — ask the user for the real logo,
+or generate text/logo-free and let them composite (see Etiquette).
 
 ## Step 2 — Design for the crop, not the canvas
 
@@ -66,7 +97,7 @@ registry) — cheap, good for clean graphic compositions. Every call is
 logged to the workspace Logs tab automatically.
 
 ```bash
-curl -s -X POST "$HUNDRADS_BASE_URL/v1/media/poster" \
+curl -s -X POST "https://hundrads.com/v1/media/poster" \
   -H "Authorization: Bearer $HUNDRADS_API_KEY" -H "Content-Type: application/json" \
   -d '{
     "prompt": "<full visual description, exact text in quotes>",
