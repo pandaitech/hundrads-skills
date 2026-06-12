@@ -55,20 +55,26 @@ find . -maxdepth 3 \
 Also glance at the `brand-assets/` output dir and any `assets/`, `public/`,
 `static/`, or `img/` folders for unobviously-named brand imagery.
 
-If a logo is found:
+If a logo is found, **pass it to the model as a reference image** — the
+poster endpoint accepts up to 4 via the `reference_images` field (base64
+PNG/JPEG). The model conditions on it, so the generated pfp/banner carries
+the real mark instead of an invented one. Base64-encode the file:
 
-1. **Read it** (open the image, or for `.svg` read the markup) so you can
-   describe it precisely — shape, colors (hex), letterforms, icon motif.
-2. The poster endpoint takes a **text prompt only** — no image upload. So
-   feed the logo into the prompt as an exact verbal description: e.g.
-   *"the brand's existing logo: a rounded teal hexagon (#0FB5AE) enclosing a
-   white lowercase 'h', flat, no gradient"*. The closer the description, the
-   closer the generated asset matches the real mark.
-3. If the logo carries text you must reproduce exactly, quote it (same rule
-   as any generated text — character-for-character).
+```bash
+LOGO_B64=$(base64 -i path/to/logo.png | tr -d '\n')
+```
+
+(SVG isn't a raster format — rasterize to PNG first, e.g.
+`rsvg-convert logo.svg -o /tmp/logo.png` or `magick logo.svg /tmp/logo.png`,
+then base64 that.)
+
+Still **describe the logo in the prompt too** (shape, hex colors, where it
+sits in the composition) — the reference image steers, the prompt directs.
+If the logo carries text you must reproduce exactly, quote it
+character-for-character.
 
 If nothing is found, don't fabricate one — ask the user for the real logo,
-or generate text/logo-free and let them composite (see Etiquette).
+or generate logo-free and let them composite (see Etiquette).
 
 ## Step 2 — Design for the crop, not the canvas
 
@@ -109,6 +115,18 @@ curl -s -X POST "https://hundrads.com/v1/media/poster" \
 python3 -c 'import json,base64; d=json.load(open("/tmp/pfp.json")); open("brand-assets/<brand>-pfp.png","wb").write(base64.b64decode(d["png_b64"]))'
 ```
 
+**If you found a brand logo** (Step 1), include it so the asset carries the
+real mark. Build the payload with `jq` to embed the base64 cleanly:
+
+```bash
+LOGO_B64=$(base64 -i path/to/logo.png | tr -d '\n')
+jq -n --arg p "<full visual description, exact text in quotes>" --arg logo "$LOGO_B64" \
+  '{prompt:$p, complexity:"simple", aspect:"1:1", include_b64:true, reference_images:[$logo]}' \
+  | curl -s -X POST "https://hundrads.com/v1/media/poster" \
+      -H "Authorization: Bearer $HUNDRADS_API_KEY" -H "Content-Type: application/json" \
+      -d @- > /tmp/pfp.json
+```
+
 Repeat with `"aspect": "16:9"` for the banner →
 `brand-assets/<brand>-cover.png`.
 
@@ -139,8 +157,9 @@ Rules:
 ## Etiquette
 
 - Never claim anything was uploaded — the user does every upload.
-- Never invent a logo for a brand that already has one; ask for the real
-  one and describe it in the prompt (or generate text-free and let the user
-  composite).
+- Never invent a logo for a brand that already has one. Scan the folder
+  (Step 1); if a logo exists, pass it as a `reference_images` input so the
+  model reproduces it. If none is found, ask for the real one or generate
+  logo-free and let the user composite.
 - Pfp + cover should read as one identity: same palette, same mood.
   Generate the pfp first, then describe it in the banner prompt.
