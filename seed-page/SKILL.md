@@ -55,6 +55,18 @@ OK — no heavy calendar ceremony.
 A seeded page fails if every post reads like a brand warming up to sell.
 Mix archetypes — roughly one each, adjusted to count:
 
+0. **Read the brand brief first** (skip only if the user's request is
+   self-contained):
+
+   ```bash
+   curl -s "$HUNDRADS_BASE_URL/v1/brand/brief?brand=<brand>" \
+     -H "Authorization: Bearer $HUNDRADS_API_KEY"
+   ```
+
+   Brands come from `GET /v1/accounts`. The brief carries the user's voice
+   notes and channel playbooks — follow them over any generic style. Also
+   study past posts in the library endpoints to match what actually performed.
+
 1. **Identity / intro** — who this account is, casually. A person talking,
    not a mission statement.
 2. **Value drop** — one genuinely useful tip in the niche, complete in

@@ -37,6 +37,17 @@ writing for each channel: [`threads-post`](../threads-post/SKILL.md),
 if the user wants launch ads too, run [`meta-ads`](../meta-ads/SKILL.md) as
 a separate pass.
 
+## Step 0 — Read the brand brief
+
+```bash
+curl -s "$HUNDRADS_BASE_URL/v1/brand/brief?brand=<brand>" \
+  -H "Authorization: Bearer $HUNDRADS_API_KEY"
+```
+
+Brands come from `GET /v1/accounts`. The brief carries the user's voice notes
+and per-channel playbooks — follow them over any generic style, and let them
+pre-answer interview questions where they can.
+
 ## Step 1 — The intake interview (ask for as much detail as possible)
 
 Cover ALL of these in chat. Study anything the user shares (past posts,

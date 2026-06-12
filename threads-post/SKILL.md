@@ -39,6 +39,18 @@ environment variable, and the server base URL in `HUNDRADS_BASE_URL`
 
 ## Steps
 
+0. **Read the brand brief first** (skip only if the user's request is
+   self-contained):
+
+   ```bash
+   curl -s "$HUNDRADS_BASE_URL/v1/brand/brief?brand=<brand>" \
+     -H "Authorization: Bearer $HUNDRADS_API_KEY"
+   ```
+
+   Brands come from `GET /v1/accounts`. The brief carries the user's voice
+   notes and channel playbooks — follow them over any generic style. Also
+   study past posts in the library endpoints to match what actually performed.
+
 1. **Write 2–3 single-post variations in the account's established voice.**
    Study whatever the user gives you (past posts, links, notes) — match
    length, bluntness and tone. Show them in chat and iterate — never submit a

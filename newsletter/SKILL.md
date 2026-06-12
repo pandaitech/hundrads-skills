@@ -37,6 +37,18 @@ environment variable, and the server base URL in `HUNDRADS_BASE_URL`
 
 ## Steps
 
+0. **Read the brand brief first** (skip only if the user's request is
+   self-contained):
+
+   ```bash
+   curl -s "$HUNDRADS_BASE_URL/v1/brand/brief?brand=<brand>" \
+     -H "Authorization: Bearer $HUNDRADS_API_KEY"
+   ```
+
+   Brands come from `GET /v1/accounts`. The brief carries the user's voice
+   notes and channel playbooks — follow them over any generic style. Also
+   study past posts in the library endpoints to match what actually performed.
+
 1. **Write the draft in the list's established voice.** Study whatever the
    user gives you (past sends, links, notes). Show subject options + preview
    + body in chat and iterate — never submit a draft the user hasn't seen.

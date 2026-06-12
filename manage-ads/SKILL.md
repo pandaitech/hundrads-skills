@@ -175,6 +175,18 @@ empty is fine — never a restatement. Relay returned `warnings` + `review_url`
 
 Check every run, in this order:
 
+0. **Read the brand brief first** (skip only if the user's request is
+   self-contained):
+
+   ```bash
+   curl -s "$HUNDRADS_BASE_URL/v1/brand/brief?brand=<brand>" \
+     -H "Authorization: Bearer $HUNDRADS_API_KEY"
+   ```
+
+   Brands come from `GET /v1/accounts`. The brief carries the user's voice
+   notes and channel playbooks — follow them over any generic style. Also
+   study past posts in the library endpoints to match what actually performed.
+
 1. **Paused-test backlog first.** `live_ads(brand, status="paused")` — ads
    the user approved through the queue but never enabled are READY-MADE
    inventory. Before drafting anything new: rank the backlog against the

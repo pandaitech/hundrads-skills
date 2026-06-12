@@ -32,6 +32,18 @@ also serves interactive docs at `$HUNDRADS_BASE_URL/docs`.
 
 ## Steps
 
+0. **Read the brand brief first** (skip only if the user's request is
+   self-contained):
+
+   ```bash
+   curl -s "$HUNDRADS_BASE_URL/v1/brand/brief?brand=<brand>" \
+     -H "Authorization: Bearer $HUNDRADS_API_KEY"
+   ```
+
+   Brands come from `GET /v1/accounts`. The brief carries the user's voice
+   notes and channel playbooks — follow them over any generic style. Also
+   study past posts in the library endpoints to match what actually performed.
+
 1. **Pick brand + objective.** `GET /v1/accounts` lists the user's brands.
    A brand with `can_push: false` can be researched and drafted for, but
    approval can't push yet — say so up front. Map the goal to an objective
