@@ -299,6 +299,11 @@ The meta-ads skill owns drafting/creative; this skill owns the live account and
 the resume/kill decisions on existing objects. Always state the budget
 impact of what you're suggesting (RM/day added if enabled).
 
+When a creative refresh should use the user's OWN image (they hand you a file
+rather than wanting one generated), upload it via `POST /v1/media/upload`
+(multipart `brand` + `file`, PNG/JPEG/GIF/WEBP, ≤30MB) and put the returned
+`image_hash` in the `ad_edit` proposal.
+
 ### 8. Report
 
 End every run with a marketer's stand-up, per brand:

@@ -68,18 +68,35 @@ also serves interactive docs at `https://hundrads.com/docs`.
 4. **Show the user the copy in chat first.** Iterate until they're happy.
    Don't submit drafts of copy the user hasn't seen.
 
-5. **Creative (optional).** `POST /v1/media/poster` generates an ad image;
-   pass `brand` so it uploads to the ad account and returns `image_hash` +
-   `image_url` for the draft. Scene-led images: `complexity: "simple"`.
-   Accurate in-image text or photorealism: `complexity: "complex"` (pricier).
-   If the punchline lives in rendered screenshot text, don't AI-generate it —
-   give the user the exact text to screenshot on a real phone.
-   **BYOK:** image generation uses the workspace's own AI key (`simple` → Gemini,
-   `complex` → OpenAI). A **400 `No <provider> API key configured`** means none
-   is stored — have the user add one at `https://hundrads.com/providers`, then retry.
-   **Slow call:** a poster call can take **up to 5 min** — set the Bash `timeout`
-   to **600000** (10 min) so it isn't killed by the 2-min default; not hung, just
-   generating.
+5. **Creative (optional).** Two ways to get an `image_hash` + `image_url` for
+   the draft — both upload to the brand's ad account, so pass `brand`:
+
+   - **Generate with AI** — `POST /v1/media/poster`. Scene-led images:
+     `complexity: "simple"`. Accurate in-image text or photorealism:
+     `complexity: "complex"` (pricier). If the punchline lives in rendered
+     screenshot text, don't AI-generate it — give the user the exact text to
+     screenshot on a real phone.
+     **BYOK:** generation uses the workspace's own AI key (`simple` → Gemini,
+     `complex` → OpenAI). A **400 `No <provider> API key configured`** means none
+     is stored — have the user add one at `https://hundrads.com/providers`, then retry.
+     **Slow call:** a poster call can take **up to 5 min** — set the Bash `timeout`
+     to **600000** (10 min) so it isn't killed by the 2-min default; not hung, just
+     generating.
+
+   - **Upload the user's own image** — when they hand you a file (product photo,
+     a designed creative) instead of wanting one generated: `POST /v1/media/upload`,
+     multipart `brand` + `file` (PNG/JPEG/GIF/WEBP, ≤30MB). Returns the same
+     `image_hash` + `image_url`. No AI key needed.
+
+     ```bash
+     curl -s -X POST "https://hundrads.com/v1/media/upload" \
+       -H "Authorization: Bearer $HUNDRADS_API_KEY" \
+       -F brand=<brand> -F file=@/path/to/creative.jpg
+     ```
+
+     The user can also upload or replace the image themselves on the draft's
+     review card in the dashboard before approving — so submitting a draft with
+     an empty `image_hash` is fine when they'd rather attach their own image.
 
 6. **Submit drafts.**
 
@@ -99,8 +116,8 @@ also serves interactive docs at `https://hundrads.com/docs`.
          "call_to_action": "LEARN_MORE",
          "link_url": "https://...",
          "daily_budget_cents": 1000,
-         "image_hash": "<from poster, or empty>",
-         "image_url": "<from poster, or empty>",
+         "image_hash": "<from poster or upload, or empty>",
+         "image_url": "<from poster or upload, or empty>",
          "geo_countries": ["MY"]
        }
      }'

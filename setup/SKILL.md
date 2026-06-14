@@ -95,7 +95,9 @@ On 200, tell the user:
   provider key. Hundrads supplies none. Add one at `$BASE/providers` (stored
   encrypted): Gemini for cheap images, OpenAI for accurate-text/complex. A
   **400 `No <provider> API key configured`** from those endpoints means the
-  key is missing — point them at `$BASE/providers`.
+  key is missing — point them at `$BASE/providers`. No AI key yet? They can
+  still run ads — upload their own creative image (`/v1/media/upload`, no key
+  needed) instead of generating one.
 
 ## Troubleshooting
 
