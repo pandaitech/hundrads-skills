@@ -68,14 +68,34 @@ also serves interactive docs at `https://hundrads.com/docs`.
 4. **Show the user the copy in chat first.** Iterate until they're happy.
    Don't submit drafts of copy the user hasn't seen.
 
-5. **Creative (optional).** Two ways to get an `image_hash` + `image_url` for
-   the draft — both upload to the brand's ad account, so pass `brand`:
+5. **Creative (optional) — one image, or multiple ratios?** Before generating,
+   ask the user which they want (skip the question only if they've already
+   said):
+
+   - **One image** — a single square (`1:1`) or feed (`4:5`) creative. Simplest;
+     Meta shows the same image across every placement.
+   - **Multiple ratios** — the SAME ad with a feed crop (`1:1` or `4:5`) *and* a
+     vertical `9:16` for Stories/Reels. Approve pushes ONE placement-customized
+     creative and Meta serves the right crop per placement. Best when the ad
+     runs across feed + Stories/Reels — each ratio is composed separately, so
+     the Stories creative uses the full vertical canvas instead of a
+     letterboxed square. The dashboard preview shows every ratio so the user
+     reviews each crop before approving.
+
+   Two ways to get an `image_hash` + `image_url` for the draft — both upload to
+   the brand's ad account, so pass `brand`:
 
    - **Generate with AI** — `POST /v1/media/poster`. Scene-led images:
      `complexity: "simple"`. Accurate in-image text or photorealism:
      `complexity: "complex"` (pricier). If the punchline lives in rendered
      screenshot text, don't AI-generate it — give the user the exact text to
      screenshot on a real phone.
+     **For multiple ratios:** call poster ONCE PER RATIO with the same creative
+     idea but the `aspect` tuned per slot (`"4:5"` or `"1:1"` for feed, `"9:16"`
+     for Stories/Reels), and adjust the prompt's composition per ratio (e.g.
+     keep the subject centered with headroom on `9:16`). Pair each returned
+     `{image_hash, image_url}` with the `ratio` you asked for, for the `images`
+     list in step 6.
      **BYOK:** generation uses the workspace's own AI key (`simple` → Gemini,
      `complex` → OpenAI). A **400 `No <provider> API key configured`** means none
      is stored — have the user add one at `https://hundrads.com/providers`, then retry.
@@ -86,7 +106,8 @@ also serves interactive docs at `https://hundrads.com/docs`.
    - **Upload the user's own image** — when they hand you a file (product photo,
      a designed creative) instead of wanting one generated: `POST /v1/media/upload`,
      multipart `brand` + `file` (PNG/JPEG/GIF/WEBP, ≤30MB). Returns the same
-     `image_hash` + `image_url`. No AI key needed.
+     `image_hash` + `image_url`. No AI key needed. For multiple ratios, upload
+     each ratio file separately and pair each returned hash with its `ratio`.
 
      ```bash
      curl -s -X POST "https://hundrads.com/v1/media/upload" \
@@ -122,6 +143,20 @@ also serves interactive docs at `https://hundrads.com/docs`.
        }
      }'
    ```
+
+   - **Multiple ratios:** instead of `image_hash`/`image_url`, send `images` — a
+     list of `{ "image_hash", "image_url", "ratio" }`, one per ratio (ratios
+     must be distinct; valid: `"1:1"`, `"4:5"`, `"9:16"`, `"16:9"`). Two or more
+     → Hundrads pushes a single **placement-customized** creative (feed gets the
+     square/portrait, Stories/Reels get the `9:16`). One variant is treated as a
+     plain single-image ad — just use `image_hash` instead. Example:
+
+     ```json
+     "images": [
+       { "image_hash": "<feed hash>",  "image_url": "<feed url>",  "ratio": "4:5" },
+       { "image_hash": "<story hash>", "image_url": "<story url>", "ratio": "9:16" }
+     ]
+     ```
 
    - **Targeting is mostly the creative's job now.** Meta's delivery finds the
      buyer from the ad itself — don't hand-build narrow interest/demographic
