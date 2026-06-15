@@ -322,7 +322,8 @@ End every run with a marketer's stand-up, per brand:
 
 Send the SAME stand-up to the user's channel — `POST /v1/reports/ads`
 exactly once per brand. The server owns the layout (Discord embed / Telegram
-album / email, per-user setting) and renders the account-health dashboard as
+album / email — the channel and Discord webhook are set by the user in the
+Hundrads dashboard **Reports** tab) and renders the account-health dashboard as
 IMAGES from live Meta data (KPI tiles for last 7d / yesterday / today + the
 daily spend-vs-ROAS chart); you only fill the sections:
 
@@ -357,4 +358,6 @@ Discipline — this is what keeps reports consistent run to run:
 - One entry per proposal in `actions`; skip sections that are empty.
 - Plain language, no internal ids, no tool names, no approval-flow talk.
 - Skipped/failed report delivery never blocks the run — note it in chat
-  and move on.
+  and move on. A `422 no … webhook configured` means the user hasn't picked a
+  report channel yet — point them to the Hundrads dashboard → **Reports** tab
+  to add one.
