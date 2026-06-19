@@ -25,6 +25,7 @@ any time at [hundrads.com/keys](https://hundrads.com/keys)).
 | `setup` | One-time connect: device auth → API key → verified |
 | `meta-ads` | Draft Meta (FB/IG) ads learned from your own past ad performance |
 | `manage-ads` | Daily marketer loop on live ads — kill/scale/fix proposals, never direct changes |
+| `meta-ads-autopilot` | Hands-off autopilot: runs the marketer loop on a schedule, drafts changes + new ads, reports to your channel |
 | `telegram-post` | Draft Telegram channel posts in your voice, scheduled |
 | `threads-post` | Draft Threads posts in your voice, scheduled |
 | `newsletter` | Draft email newsletters (Kit) in your voice, scheduled |
