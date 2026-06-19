@@ -106,21 +106,40 @@ Label each active ad:
 ### 4. Decide + act (autonomous, all defaults from `config.defaults`)
 For each brand, in priority order, respecting every guardrail:
 
-- **Winner with no scale staged within `restage_cooldown_hours`** → submit a
-  higher-budget duplicate as a `meta_ad` draft. Budget = winner's daily budget ×
-  `defaults.scale_budget_mult`. Reuse the winner's copy + image (see
-  "Submitting drafts" below). Alternatively (or additionally, when raising the
-  existing ad set is the better move) file a `budget_change` proposal:
+- **Winner due a scale** — out of learning, ROAS above the brand's target/avg,
+  healthy CTR, and no scale staged within `restage_cooldown_hours` (the ~3-day
+  cadence). Grow it with a **ROAS-sized budget bump, capped at +30%**, so Meta's
+  learning phase isn't reset. Size the step by how strong the winner is:
+
+  | Winner strength (out of learning) | Budget bump |
+  |---|---|
+  | Strong — ROAS ≥ 1.5× brand target/avg, healthy CTR | **+30%** |
+  | Solid — ROAS ≈ 1.2–1.5× target | **+20%** |
+  | Marginal — ROAS just above target (≈ 1.0–1.2×) | **+10%** |
+  | At/below target, or CTR decaying | **don't scale** — hold or kill instead |
+
+  Never exceed +30% in one step — a bigger jump resets learning and tanks the ad
+  (this graduated table supersedes any flat `scale_budget_mult`). Base = the ad
+  set's current daily budget (never step down); `new = round(base × (1 + pct/100))`
+  to the nearest RM1.
+
+  **Prefer editing the live ad set** with a `budget_change` proposal — a ≤30%
+  edit keeps the existing learning phase, whereas a duplicate restarts it, so
+  editing almost always wins:
   ```bash
   curl -s -X POST "https://hundrads.com/v1/drafts" \
     -H "Authorization: Bearer $HUNDRADS_API_KEY" -H 'Content-Type: application/json' \
     -d '{"kind":"budget_change","agent_note":"<pitch>","payload":{
       "brand":"<brand>","adset_id":"<id>","adset_name":"<name>",
-      "current_daily_budget_cents":1500,"new_daily_budget_cents":2250,
-      "reason":"<why>","expected_impact":"<what you expect>"}}'
+      "current_daily_budget_cents":1500,"new_daily_budget_cents":1950,
+      "reason":"<why — name the ROAS tier that set the %>","expected_impact":"<what you expect>"}}'
   ```
-  Mention the scale in the digest either way. Budget increases never
-  auto-approve — they always wait for the user.
+  Only stage a higher-budget PAUSED duplicate (a `meta_ad` draft reusing the
+  winner's copy + image, see "Submitting drafts" below) when a genuinely *fresh*
+  ad is wanted — and note in the digest that a duplicate starts a new learning
+  phase. Record the new budget + timestamp in `state.brands[brand]` so
+  `restage_cooldown_hours` blocks a re-bump next pass. Mention the scale in the
+  digest. Budget increases never auto-approve — they always wait for the user.
 - **New test due** (under `max_new_tests_per_brand_per_day`, and a winner/angle
   worth iterating exists) → draft `defaults.variants_per_test` variations in the
   account voice, changing ONE variable across them. Copy comes from
