@@ -176,6 +176,32 @@ any `warnings` from the response in the digest; record each `draft.id` in
 `state.brands[brand].staged`. The draft itself never touches Meta — only the
 user's Approve does, and it only ever creates PAUSED objects.
 
+**Preview each new test ad (`POST /v1/reports/ad-preview`):** right after a
+`meta_ad` draft for a NEW test is accepted, send ONE preview message per ad so
+the user sees what it looks like before approving — a rendered Facebook/Instagram
+**feed placement mockup** (page avatar → primary text → creative → headline /
+description / CTA button) plus the copy + budget. Same delivery as the digest:
+the server resolves the channel + webhook from the dashboard **Reports** tab and
+renders the image itself; the autopilot never holds a webhook. Pass the SAME
+creative fields you put on the draft, plus the `image_url` you got back from
+`POST /v1/media/poster` or `/v1/media/upload` (the mockup fetches it; omit it
+for a screenshot-pending ad and it renders a placeholder):
+
+```bash
+curl -s -X POST "https://hundrads.com/v1/reports/ad-preview" \
+  -H "Authorization: Bearer $HUNDRADS_API_KEY" -H 'Content-Type: application/json' \
+  -d '{"brand":"<brand>","ad_name":"<name>","primary_text":"...","headline":"...",
+    "description":"...","call_to_action":"<CTA>","link_url":"https://...",
+    "image_url":"<image_url from media call>","campaign_name":"<campaign>",
+    "daily_budget_cents":1500,"agent_note":"<one line: what this variant tests>"}'
+```
+
+Send it ONLY for new test ads you staged this pass — not for scale duplicates of
+an existing winner (the user has already seen that creative). A 422
+(`no Discord webhook configured`) means the Reports tab isn't set up; treat it
+exactly like the digest 422 — don't fail the pass, just note it once. These
+previews are IN ADDITION to the single per-brand digest in step 5.
+
 
 ### 5. Report the pass via Hundrads (`POST /v1/reports/ads`)
 Delivery is owned by the server. The user picks the channel + webhook/chat/email
