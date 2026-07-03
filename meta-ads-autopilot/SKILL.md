@@ -184,10 +184,15 @@ Every finding MUST resolve into exactly one of:
    observation: "Comments keep asking about price — I want to test 2 ads that
    lead with the RM49 price. Approving the pending batch unblocks me." Never
    file the same recommendation two passes running (check your notes).
-3. **A durable note** (`POST /v1/agent/notes`) when one more day of data would
-   confirm it — with what to check next pass.
 
-An observation that resolves into none of these doesn't belong in the digest.
+**Default to 1 or 2 — the user must SEE what you found.** A durable note
+(`POST /v1/agent/notes`) is a supplement for carrying the judgment forward,
+NEVER a substitute for showing the finding: a mining insight that ends up
+only in a note is invisible and worthless to the user. On a daily pass where
+mining ran, the digest must either carry ≥1 `recommendations` bullet or the
+mining genuinely found nothing (rare on an active account — say so in
+`watching` if so). Every draft you file from mining also gets an `actions`
+entry, so the user sees WHY it exists.
 
 ### 5. Decide + act (autonomous, all defaults from `config.defaults`)
 For each brand, in priority order, respecting every guardrail:
