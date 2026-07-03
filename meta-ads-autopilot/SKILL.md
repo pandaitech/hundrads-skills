@@ -341,6 +341,10 @@ previews are IN ADDITION to the single per-brand digest in step 6.
 
 
 ### 6. Report the pass via Hundrads (`POST /v1/reports/ads`)
+**The Discord report IS the product.** The user judges every pass — and the
+autopilot itself — solely by this message. Work that isn't visible in it
+(notes, internal reasoning, held decisions) does not exist to them, so
+anything you found, filed, or decided this pass must be readable right there.
 Delivery is owned by the server. The user picks the channel + webhook/chat/email
 in the dashboard **Reports** tab; the autopilot NEVER holds a webhook. POST one
 structured report and Hundrads fans it out to the configured channel, rendering
