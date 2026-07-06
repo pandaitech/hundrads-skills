@@ -6,7 +6,7 @@ the safe middle layer between agents and your marketing accounts.
 **The contract:** agents draft, you approve. Every ad, post, and
 newsletter your agent writes lands in the Hundrads dashboard as a draft.
 Nothing posts, sends, or spends without your explicit Approve — and even
-approved Meta ads are created PAUSED.
+approved Meta and Google ads are created PAUSED.
 
 ## Install
 
@@ -24,6 +24,7 @@ any time at [hundrads.com/keys](https://hundrads.com/keys)).
 |---|---|
 | `setup` | One-time connect: device auth → API key → verified |
 | `meta-ads` | Draft Meta (FB/IG) ads learned from your own past ad performance |
+| `google-ads` | Draft Google Search ads (keywords + RSAs), mine search terms into negative-keyword proposals |
 | `manage-ads` | Daily marketer loop on live ads — kill/scale/fix proposals, never direct changes |
 | `meta-ads-autopilot` | Hands-off autopilot: runs the marketer loop on a schedule, drafts changes + new ads, reports to your channel |
 | `telegram-post` | Draft Telegram channel posts in your voice, scheduled |
