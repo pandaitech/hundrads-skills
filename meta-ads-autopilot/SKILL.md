@@ -291,9 +291,22 @@ curl -s -X POST "https://hundrads.com/v1/drafts" \
   -d '{"kind":"meta_ad","agent_note":"<one-paragraph pitch: what this is and why>","payload":{
     "brand":"<brand>","campaign_name":"<campaign>","ad_name":"<name>",
     "objective":"<objective>","primary_text":"...","headline":"...",
-    "description":"...","call_to_action":"<CTA>","link_url":"https://...",
-    "daily_budget_cents":1500,"image_hash":"<hash>"}}'
+    "description":"...","call_to_action":"<CTA>","destination":"website",
+    "link_url":"https://...","daily_budget_cents":1500,"image_hash":"<hash>"}}'
 ```
+
+**State the ad type in every pitch — the user must never have to guess what
+kind of ad they're approving.** The FIRST sentence of every `meta_ad` draft's
+`agent_note`, its digest line, and its preview `agent_note` names the ad type:
+"Website ad — click opens <landing page>" or "WhatsApp ad — click opens a
+WhatsApp chat", plus the objective. `destination` controls it:
+`"website"` (default, click → `link_url`) or `"whatsapp"` (click-to-WhatsApp:
+click opens a chat with the Page's connected WhatsApp Business number;
+`link_url` is ignored, the CTA auto-sets to `WHATSAPP_MESSAGE`, and
+OUTCOME_SALES needs no pixel — conversations are the signal). Only draft
+`whatsapp` when the brand closes sales in chat AND the Page has a WhatsApp
+number connected; if the push fails at approve with a WhatsApp error, flag the
+missing Page↔WhatsApp connection in the alert instead of retrying.
 
 Returns `{draft: {id}, warnings, review_url}`. Give every variant in the same
 test the SAME `campaign_name` — on approval the handler get-or-creates the

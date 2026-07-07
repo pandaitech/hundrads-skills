@@ -43,10 +43,21 @@ also serves interactive docs at `https://hundrads.com/docs`.
    notes and channel playbooks — follow them over any generic style. Also
    study past posts in the library endpoints to match what actually performed.
 
-1. **Pick brand + objective.** `GET /v1/accounts` lists the user's brands.
-   A brand with `can_push: false` can be researched and drafted for, but
-   approval can't push yet — say so up front. Map the goal to an objective
-   (OUTCOME_TRAFFIC, OUTCOME_SALES, OUTCOME_ENGAGEMENT, OUTCOME_LEADS).
+1. **Pick brand + objective + destination.** `GET /v1/accounts` lists the
+   user's brands. A brand with `can_push: false` can be researched and drafted
+   for, but approval can't push yet — say so up front. Map the goal to an
+   objective (OUTCOME_TRAFFIC, OUTCOME_SALES, OUTCOME_ENGAGEMENT,
+   OUTCOME_LEADS) AND a destination:
+
+   - `"website"` (default) — the click opens `link_url` (landing page).
+   - `"whatsapp"` — a **click-to-WhatsApp ad**: the click opens a WhatsApp
+     chat with the brand Page's connected WhatsApp Business number. No
+     landing page; `link_url` is ignored and the button becomes
+     "Send WhatsApp Message". Works with any objective including
+     OUTCOME_SALES (no pixel needed — conversations are the signal). The
+     Page must have a WhatsApp number connected or the push fails at
+     approve; warn the user to check this. Great fit when the business
+     closes sales in chat rather than on a website.
 
 2. **Study what worked — always, before writing a word.**
 
@@ -65,8 +76,22 @@ also serves interactive docs at `https://hundrads.com/docs`.
    ~40 chars), `call_to_action`, `link_url`. Change ONE variable per variant
    (hook angle OR offer framing OR CTA) so the test reads cleanly.
 
-4. **Show the user the copy in chat first.** Iterate until they're happy.
-   Don't submit drafts of copy the user hasn't seen.
+4. **Show the user the ad plan in chat first — ALWAYS, before any draft is
+   submitted.** Start with an **ad type card** so the user knows exactly what
+   kind of ad you're about to create, then the copy. Never submit a draft the
+   user hasn't seen the type and copy of. The card:
+
+   ```
+   AD TYPE
+   • Kind:        Website ad (click → landing page)   ← or: WhatsApp ad (click → WhatsApp chat)
+   • Objective:   Sales (OUTCOME_SALES)
+   • On click:    opens https://example.com/offer      ← or: opens a WhatsApp chat with the Page's number
+   • Button:      SHOP_NOW                             ← or: Send WhatsApp Message
+   • Budget:      RM10/day per variant · 3 variants
+   • Brand:       forge · targeting MY
+   ```
+
+   Iterate until they're happy with both the type and the copy.
 
 5. **Creative (optional).** Two ways to get an `image_hash` + `image_url` for
    the draft — both upload to the brand's ad account, so pass `brand`:
@@ -78,7 +103,7 @@ also serves interactive docs at `https://hundrads.com/docs`.
      screenshot on a real phone.
      **BYOK:** generation uses the workspace's own AI key (`simple` → Gemini,
      `complex` → OpenAI). A **400 `No <provider> API key configured`** means none
-     is stored — have the user add one at `https://hundrads.com/providers`, then retry.
+     is stored — have the user add one at `https://hundrads.com/ai/providers`, then retry.
      **Slow call:** a poster call can take **up to 5 min** — set the Bash `timeout`
      to **600000** (10 min) so it isn't killed by the 2-min default; not hung, just
      generating.
@@ -114,6 +139,7 @@ also serves interactive docs at `https://hundrads.com/docs`.
          "primary_text": "...",
          "headline": "...",
          "call_to_action": "LEARN_MORE",
+         "destination": "website",
          "link_url": "https://...",
          "daily_budget_cents": 1000,
          "image_hash": "<from poster or upload, or empty>",
@@ -133,6 +159,10 @@ also serves interactive docs at `https://hundrads.com/docs`.
      targeting — a cafe in one district — isn't supported yet; note it to the
      user if they ask.)
 
+   - **Click-to-WhatsApp variant:** set `"destination": "whatsapp"` and drop
+     `link_url` (it's ignored). `call_to_action` auto-sets to
+     `WHATSAPP_MESSAGE`. Everything else is the same payload. The response's
+     `warnings` will remind about the Page↔WhatsApp connection — relay it.
    - Use the SAME `campaign_name` across variants of one test — Hundrads
      consolidates them under one campaign on approval.
    - `daily_budget_cents` is the account's minor unit (RM10/day = 1000).
@@ -165,6 +195,9 @@ also serves interactive docs at `https://hundrads.com/docs`.
 
 ## Etiquette (what makes an agent good at this)
 
+- **Always announce the ad type before drafting** (the AD TYPE card in step
+  4): what kind of ad, what a click does, which objective, what budget. The
+  user must never discover the ad type in the review queue.
 - Research before writing: never draft from a blank page when the library
   has spend data.
 - One variable per variant; say what each tests.
