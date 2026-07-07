@@ -308,6 +308,10 @@ OUTCOME_SALES needs no pixel — conversations are the signal). Only draft
 number connected; if the push fails at approve with a WhatsApp error, flag the
 missing Page↔WhatsApp connection in the alert instead of retrying.
 
+Placements are automatic — website ads with reach/traffic/sales objectives also
+serve in the Threads feed. That's not a draft field: the Instagram and Threads
+profile identities are brand-level config on the dashboard's Brands page.
+
 Returns `{draft: {id}, warnings, review_url}`. Give every variant in the same
 test the SAME `campaign_name` — on approval the handler get-or-creates the
 campaign by name, so all variants land in one campaign (consolidated learning).

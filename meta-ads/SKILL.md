@@ -59,6 +59,11 @@ also serves interactive docs at `https://hundrads.com/docs`.
      approve; warn the user to check this. Great fit when the business
      closes sales in chat rather than on a website.
 
+   Placements are automatic (Facebook, Instagram, and — for reach / traffic /
+   sales website ads — the Threads feed). Nothing to set per draft: which
+   profile fronts the ad on Instagram and Threads is brand-level config on the
+   dashboard's Brands page ("Instagram identity" / "Threads profile").
+
 2. **Study what worked — always, before writing a word.**
 
    ```bash
