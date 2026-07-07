@@ -60,9 +60,21 @@ also serves interactive docs at `https://hundrads.com/docs`.
      closes sales in chat rather than on a website.
 
    Placements are automatic (Facebook, Instagram, and — for reach / traffic /
-   sales website ads — the Threads feed). Nothing to set per draft: which
-   profile fronts the ad on Instagram and Threads is brand-level config on the
-   dashboard's Brands page ("Instagram identity" / "Threads profile").
+   sales website ads — the Threads feed). There's nothing to set per draft,
+   but you MUST tell the user which profile will front the ad on Instagram
+   and Threads (the AD TYPE card in step 4). Read it from the brand's row in
+   `GET /v1/accounts`:
+
+   - `ig_identity: "instagram"` → the ad appears on Instagram **as the brand's
+     connected Instagram account** (`instagram_actor_id` is its id). Any other
+     value, or the field missing → **as the Facebook Page** (a page-backed
+     Instagram identity).
+   - `threads_identity: "instagram"` → on Threads **as that Instagram
+     account's Threads profile**. Otherwise → **as the Facebook Page**.
+
+   Name the account, don't just name the mode: use the handle if the user or
+   the brand brief has given you one; otherwise show the `instagram_actor_id`
+   so the user can recognize the account. Never guess a handle.
 
 2. **Study what worked — always, before writing a word.**
 
@@ -94,7 +106,14 @@ also serves interactive docs at `https://hundrads.com/docs`.
    • Button:      SHOP_NOW                             ← or: Send WhatsApp Message
    • Budget:      RM10/day per variant · 3 variants
    • Brand:       forge · targeting MY
+   • Instagram:   as @desaverselearn (the brand's connected IG account)  ← or: as the Facebook Page (page-backed)
+   • Threads:     as @desaverselearn's Threads profile                   ← or: as the Facebook Page
    ```
+
+   The Instagram / Threads lines come from the brand's `ig_identity` /
+   `threads_identity` (step 1) — always include both, even when the answer is
+   "as the Facebook Page". The user must never discover in Ads Manager which
+   account their ad ran under.
 
    Iterate until they're happy with both the type and the copy.
 
@@ -201,8 +220,9 @@ also serves interactive docs at `https://hundrads.com/docs`.
 ## Etiquette (what makes an agent good at this)
 
 - **Always announce the ad type before drafting** (the AD TYPE card in step
-  4): what kind of ad, what a click does, which objective, what budget. The
-  user must never discover the ad type in the review queue.
+  4): what kind of ad, what a click does, which objective, what budget — and
+  which Instagram account and Threads profile the ad will run as. The user
+  must never discover the ad type or the ad's identity in the review queue.
 - Research before writing: never draft from a blank page when the library
   has spend data.
 - One variable per variant; say what each tests.

@@ -299,7 +299,8 @@ curl -s -X POST "https://hundrads.com/v1/drafts" \
 kind of ad they're approving.** The FIRST sentence of every `meta_ad` draft's
 `agent_note`, its digest line, and its preview `agent_note` names the ad type:
 "Website ad — click opens <landing page>" or "WhatsApp ad — click opens a
-WhatsApp chat", plus the objective. `destination` controls it:
+WhatsApp chat", plus the objective, followed by the Instagram/Threads identity
+(see "Name the Instagram + Threads identity" below). `destination` controls it:
 `"website"` (default, click → `link_url`) or `"whatsapp"` (click-to-WhatsApp:
 click opens a chat with the Page's connected WhatsApp Business number;
 `link_url` is ignored, the CTA auto-sets to `WHATSAPP_MESSAGE`, and
@@ -308,9 +309,18 @@ OUTCOME_SALES needs no pixel — conversations are the signal). Only draft
 number connected; if the push fails at approve with a WhatsApp error, flag the
 missing Page↔WhatsApp connection in the alert instead of retrying.
 
-Placements are automatic — website ads with reach/traffic/sales objectives also
-serve in the Threads feed. That's not a draft field: the Instagram and Threads
-profile identities are brand-level config on the dashboard's Brands page.
+**Name the Instagram + Threads identity on every `meta_ad` draft.** Placements
+are automatic — website ads with reach/traffic/sales objectives also serve in
+the Threads feed — and the fronting profile is brand-level config, not a draft
+field. Read it once per brand from `GET /v1/accounts`: `ig_identity:
+"instagram"` means the ad runs on Instagram as the brand's connected Instagram
+account (`instagram_actor_id` is its id; use the handle if the brand config
+names one, else show the id); any other value or a missing field means it runs
+as the Facebook Page (page-backed). Same rule for `threads_identity` on
+Threads. State both in the draft's `agent_note` and its digest line right
+after the ad type — e.g. "…runs on IG/Threads as @desaverselearn" or "…runs on
+IG/Threads as the Facebook Page" — so the user never has to open Ads Manager
+to learn which account fronted their ad.
 
 Returns `{draft: {id}, warnings, review_url}`. Give every variant in the same
 test the SAME `campaign_name` — on approval the handler get-or-creates the
