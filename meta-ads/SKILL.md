@@ -103,6 +103,7 @@ also serves interactive docs at `https://hundrads.com/docs`.
    • Kind:        Website ad (click → landing page)   ← or: WhatsApp ad (click → WhatsApp chat)
    • Objective:   Sales (OUTCOME_SALES)
    • On click:    opens https://example.com/offer      ← or: opens a WhatsApp chat with the Page's number
+   • Opens with:  "Hi! I saw the RM49 promo — is it still on?"   ← WhatsApp ads only: the pre-filled first message (whatsapp_prefill)
    • Button:      SHOP_NOW                             ← or: Send WhatsApp Message
    • Budget:      RM10/day per variant · 3 variants
    • Brand:       forge · targeting MY
@@ -185,8 +186,14 @@ also serves interactive docs at `https://hundrads.com/docs`.
 
    - **Click-to-WhatsApp variant:** set `"destination": "whatsapp"` and drop
      `link_url` (it's ignored). `call_to_action` auto-sets to
-     `WHATSAPP_MESSAGE`. Everything else is the same payload. The response's
-     `warnings` will remind about the Page↔WhatsApp connection — relay it.
+     `WHATSAPP_MESSAGE`. Always set `whatsapp_prefill` too — the initial
+     message pre-filled in the customer's composer when the chat opens.
+     Write it as the customer's first message, naming the ad's offer ("Hi! I
+     saw the RM49 promo — is it still on?") so the seller knows which ad the
+     lead came from; left empty, the chat opens with Meta's generic "Hello!
+     Can I get more info on this?". Everything else is the same payload. The
+     response's `warnings` will remind about the Page↔WhatsApp connection —
+     relay it.
    - Use the SAME `campaign_name` across variants of one test — Hundrads
      consolidates them under one campaign on approval.
    - `daily_budget_cents` is the account's minor unit (RM10/day = 1000).
